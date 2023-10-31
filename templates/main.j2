@@ -1,9 +1,20 @@
-<html>
-<head>
-    <title>Test</title>
-</head>
-<body>
-    <h1>Test</h1>
-    <p>Test</p>
-</body>
-</html>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Amount Spent</th>
+        <th>Category</th>
+        <th>Description</th>
+        <th>Date</th>
+    </tr>
+    <tbody>
+    {% for item in Expenses %}
+    <tr>
+        <td>{{item['Name']}}</td>
+        <td>{{item['Amount']}}</td>
+        <td>{{item['Category']}}</td>
+        <td>{{item['Description']}}</td>
+        <td>{{item['Day']}}</td>
+    </tr>
+    {% endfor %}
+    </table>
