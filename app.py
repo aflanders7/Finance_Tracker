@@ -1,12 +1,15 @@
 from flask import Flask, render_template, json, redirect, request
 import os
 import database.db_connector as db
+from flask_mysqldb import MySQL
+from db_connector import connect_to_database, execute_query
 
 db_connection = db.connect_to_database()
 
 # Configuration
 
 app = Flask(__name__)
+mysql = MySQL(app)
 
 # Routes 
 
@@ -30,9 +33,9 @@ def expense():
             Description = request.form["description"]
             Day = request.form["date"]
 
-
             query = "INSERT INTO Expenses (Name, Amount, Category, Description, Day) VALUES (%s, %s, %s, %s, %s)"
-            cursor = db.execute_query(db_connection=db_connection, query=query)
+            
+            db.execute(query, (Name, Amount, Category, Description, Day))
         
         return redirect("/expenses")
 
