@@ -3,6 +3,7 @@ import os
 from flask_mysqldb import MySQL
 from database.db_connector import connect_to_database, execute_query
 from dotenv import load_dotenv, find_dotenv
+from datetime import datetime
 
 load_dotenv(find_dotenv())
 
@@ -35,6 +36,7 @@ def expense():
         cur = mysql.connection.cursor()
         cur.execute(query)
         data = cur.fetchall()
+        print(data)
         return render_template("expenses.j2", Expenses=data)
 
     if request.method == "POST":
@@ -46,13 +48,13 @@ def expense():
 
         if request.form.get("Add_Expense"):
             if Description == "":
-                query = "INSERT INTO Expenses (Name, Amount, Category, Day) VALUES (%s, %s, %s, %s)"
+                query = "INSERT INTO Expenses (Name, Amount, Category, Day) VALUES (%s, %s, %s, %s);"
                 cur = mysql.connection.cursor()
                 cur.execute(query, (Name, Amount, Category, Day))
                 mysql.connection.commit()
 
             else:
-                query = "INSERT INTO Expenses (Name, Amount, Category, Description, Day) VALUES (%s, %s, %s, %s, %s)"
+                query = "INSERT INTO Expenses (Name, Amount, Category, Description, Day) VALUES (%s, %s, %s, %s, %s);"
                 cur = mysql.connection.cursor()
                 cur.execute(query, (Name, Amount, Category, Description, Day))
                 mysql.connection.commit()
@@ -66,6 +68,29 @@ def delete_expense(id):
     cur.execute(query, (id,))
     mysql.connection.commit()
     return redirect("/expenses")
+
+# User functions
+@app.route('/graph', methods=["GET"])
+def graph():
+    if request.method == "GET":
+        #Date2 = DateTime.Now.ToString("yyyy-MM-dd")
+        #Date1 = (datetime.datetime.now() - datetime.timedelta(30)).ToString("yyyy-MM-dd")
+        Date1 = '2023-10-01'
+        Date2 = '2023-11-05'
+        query = "SELECT SUM(Amount), CAST(Day as DATE) FROM Expenses GROUP BY Day;"
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        data = cur.fetchall()
+        print(data)
+
+        money, dates = zip(*data)
+        print(dates)
+
+        return  render_template("graph.html", labels=dates, data=money)
+
+    #Date1 = request.form["date1"]
+    #Date2 = request.form["date2"]
+
 
 # Listener
 
