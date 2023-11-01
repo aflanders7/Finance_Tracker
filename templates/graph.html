@@ -5,41 +5,23 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Expenses</title>
 </head>
-
-<table>
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Amount Spent</th>
-        <th>Category</th>
-        <th>Description</th>
-        <th>Date</th>
-    </tr>
-    <tbody>
-    {% for item in data %}
-    <tr>
-        <td>{{ item }}</td>
-    </tr>
-    {% endfor %}
-</table>
  
 <body>
+    <h1>Total Expenses per month</h1>
     <div style="height: 50vh; width: 50%;">
         <canvas id="myChart"></canvas>
     </div>
  
     <script>
-        const labels = {{ labels | tojson}};
+        const labels = {{ labels | tojson | safe}};
  
         const data = {
             labels: labels,
             datasets: [{
-                label: 'Money spent per day',
-                data: {{ data | tojson}},
-                backgroundColor: 'rgba(255, 159, 64, 0.2)',
-                borderColor: 'rgb(255, 159, 64)',
-                borderWidth: 1,
-                
+                label: 'Money spent',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: {{ data | tojson | safe }},
             }]
         };
 

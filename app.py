@@ -77,16 +77,24 @@ def graph():
         #Date1 = (datetime.datetime.now() - datetime.timedelta(30)).ToString("yyyy-MM-dd")
         Date1 = '2023-10-01'
         Date2 = '2023-11-05'
-        query = "SELECT SUM(Amount), CAST(Day as DATE) FROM Expenses GROUP BY Day;"
+        #query = "SELECT SUM(Amount), CAST(Day as DATE) FROM Expenses GROUP BY Day;"
+        query = 'SELECT SUM(Amount), MONTH(Day) FROM Expenses GROUP BY MONTH(Day);'
         cur = mysql.connection.cursor()
         cur.execute(query)
         data = cur.fetchall()
         print(data)
 
         money, dates = zip(*data)
-        print(dates)
+        month = []
+        MONTHS = ['January','February','March','April','May','June','July','August','September','October',
+            'November','December']
 
-        return  render_template("graph.html", labels=dates, data=money)
+        for mon in dates:
+            month.append(MONTHS[mon])
+
+        print(month)
+
+        return  render_template("graph.html", labels=month, data=money)
 
     #Date1 = request.form["date1"]
     #Date2 = request.form["date2"]
