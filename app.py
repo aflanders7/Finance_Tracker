@@ -1,9 +1,10 @@
-from flask import Flask, render_template, json, redirect, request
+from flask import Flask, render_template, json, redirect, request, jsonify
 import os
 from flask_mysqldb import MySQL
 from database.db_connector import connect_to_database, execute_query
 from dotenv import load_dotenv, find_dotenv
 from datetime import datetime
+import requests
 
 load_dotenv(find_dotenv())
 
@@ -92,16 +93,39 @@ def graph():
         for mon in dates:
             month.append(MONTHS[mon])
 
-        print(month)
+
+        query2 = 'SELECT SUM(Amount), Category FROM Expenses GROUP BY Category;'
+        cur = mysql.connection.cursor()
+        cur.execute(query2)
+        dat = cur.fetchall()
+        total, categ = zip(*data)
 
         return  render_template("graph.html", labels=month, data=money)
 
     #Date1 = request.form["date1"]
     #Date2 = request.form["date2"]
 
+url = "http://127.0.0.1:8010/add"
+
+# Calling the random number generator microservice
+def call_random_microservie():
+
+    query2 = 'SELECT SUM(Amount), Category FROM Expenses GROUP BY Category;'
+    cur = mysql.connection.cursor()
+    cur.execute(query2)
+    dat = cur.fetchall()
+    mylist = dat
+    response = requests.get(url, params={'catlist': mylist})
+    return response.json().get("result")
+
+
+@app.route("/check", methods=['GET'])
+def check_even_odd():
+	result = call_random_microservie()
+
+	return jsonify({"result": result})
 
 # Listener
 
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 5008))
-    app.run(port=port, debug=True)
+	app.run(port=5008)
