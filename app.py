@@ -38,20 +38,26 @@ def expense():
         return render_template("expenses.j2", Expenses=data)
 
     if request.method == "POST":
+        Name = request.form["name"]
+        Amount = request.form["amount"]
+        Category = request.form["category"]
+        Description = request.form["description"]
+        Day = request.form["date"]
+
         if request.form.get("Add_Expense"):
-            Name = request.form["name"]
-            Amount = request.form["amount"]
-            Category = request.form["category"]
-            Description = request.form["description"]
-            Day = request.form["date"]
+            if Description == "":
+                query = "INSERT INTO Expenses (Name, Amount, Category, Day) VALUES (%s, %s, %s, %s)"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (Name, Amount, Category, Day))
+                mysql.connection.commit()
 
-            query = "INSERT INTO Expenses (Name, Amount, Category, Description, Day) VALUES (%s, %s, %s, %s, %s)"
-
-            cur = mysql.connection.cursor()
-            cur.execute(query, (Name, Amount, Category, Description, Day))
-            mysql.connection.commit()
-        
-        return redirect("/expenses")
+            else:
+                query = "INSERT INTO Expenses (Name, Amount, Category, Description, Day) VALUES (%s, %s, %s, %s, %s)"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (Name, Amount, Category, Description, Day))
+                mysql.connection.commit()
+            
+            return redirect("/expenses")
 
 # Listener
 
