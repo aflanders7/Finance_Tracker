@@ -31,7 +31,7 @@ def root():
 @app.route('/expenses', methods=["POST", "GET"])
 def expense():
     if request.method == "GET":
-        query = "SELECT Name, Amount, Category, Description, Day FROM Expenses;"
+        query = "SELECT * FROM Expenses;"
         cur = mysql.connection.cursor()
         cur.execute(query)
         data = cur.fetchall()
@@ -58,6 +58,14 @@ def expense():
                 mysql.connection.commit()
             
             return redirect("/expenses")
+
+@app.route('/delete_expense/<int:id>')
+def delete_expense(id):
+    query = "DELETE FROM Expenses where ID = '%s';"
+    cur = mysql.connection.cursor()
+    cur.execute(query, (id,))
+    mysql.connection.commit()
+    return redirect("/expenses")
 
 # Listener
 

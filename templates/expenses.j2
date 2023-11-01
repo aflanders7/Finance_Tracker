@@ -10,9 +10,12 @@
     <tbody>
     {% for item in Expenses %}
     <tr>
-        {% for key in item %}
-        <td>{{key}}</td>
-        {% endfor %}
+        <td>{{ item[1] }}</td>
+        <td>{{ item[2] }}</td>
+        <td>{{ item[3] }}</td>
+        <td>{{ item[4] }}</td>
+        <td>{{ item[5] }}</td>
+        <td><a href="delete_expense/{{item[0]}}" class="btn btn-default">Delete</a></td>
     </tr>
     {% endfor %}
 </table>
@@ -38,7 +41,7 @@
 				</select>
 
 				<label for="description">Desrciption:</label>
-				<input type="text" class="form-control" id="description" name="description" placeholder="">
+				<input type="text" class="form-control" id="description" name="description" placeholder="optional">
 
                 <label for="date">Date:</label>
                 <input type="date" id="date" name="date" value="2023-11-01" />
