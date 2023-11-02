@@ -1,5 +1,4 @@
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Expenses</title>
     <link rel="stylesheet" type="text/css" href="/static/css/style.css">
 </head>
@@ -13,10 +12,33 @@
 
 <div class="content">
     <h1>Expenses Tracker</h1>
+
     {% for item in total %}
         <h2>Total Expenses: ${{ item[0] }}</h2>
     {% endfor %}
 
+    <div class="sort">
+    <div class = "search">
+    <form id="search" method='post' action='/expenses-search'>
+            <label for="searchName">Search by Name: </label>
+            <input type="text" name="searchName" id="searchName">
+            <input type="submit">
+            <a href='/expenses'><button>Reset</button></a>
+    </form>
+    </div>
+
+        <p>Sort By:</p>
+        <form id="expense-cost" action="/expenses-cost" method="get">
+            <input type="submit" value="Cost" name="cost" class="btn btn-primary" style="margin:.5rem;">
+        </form>
+        <form id="expense-category" action="/expenses-category" method="get">
+            <input type="submit" value="Category" name="category" class="btn btn-primary" style="margin:.5rem;">
+        </form>
+        <form id="expense" action="/expenses" method="get">
+            <input type="submit" value="Date" name="date" class="btn btn-primary" style="margin:.5rem;">
+        </form>
+
+    </div>
 
     <table>
         <thead>
@@ -42,7 +64,7 @@
     </table>
 </div>
     <div id="insert" class="content2">
-        <h2>Add An Expense</h2>
+        <h2>&nbsp; Add An Expense</h2>
 
             <form id="Add_Expense" action="/expenses" method="post">
                 <fieldset>
@@ -71,7 +93,7 @@
                 </fieldset>
 
                 <!-- Create 'Add Person' and 'Cancel' buttons -->
-                <input type="submit" value="Add Expense" name="Add_Expense" class="btn btn-primary" style="margin:.5rem;">
+                <input type="submit" value="Add Expense" name="Add_Expense" class="btn btn-primary btn-block" style="margin:.5rem;">
 
             </form>
     </div><!--insert-->

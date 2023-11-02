@@ -59,7 +59,7 @@ a:hover {
   
   /* Change color on hover */
 .sidenav a:hover {
-    background-color: #ddd;
+  background-color: #ddd;
     color: black;
   }
   
@@ -75,22 +75,42 @@ input[type=text], input[type=number],select {
     width: 100%;
     padding: 5px;
     display: inline-block;
+    border: 2px solid black;
   }
 
-input[type=submit] {
-    width: 95%;
-    background-color: rgba(255, 159, 64, .8);
-    font-size: 1em;
-
-}
 
 .content2{
-    margin-left: 900px;
-    width: 300px;
+    margin-left: 950px;
+    width: 350px;
     position: fixed;
 }
 
 .content3{
     margin-left: 200px;
     padding-left: 20px;
+}
+
+.sort {
+  display: inline-flex;
+}
+
+.search {
+  width: 200px;
+  margin-right: 80px;
+}
+
+input[type=submit], button {
+  background-color: gainsboro;
+  padding: 8px;
+  margin: 2px;
+  border:2px solid black;
+  border-radius:2px; 
+}
+
+input[type=submit]:hover, button:hover {
+  background-color: rgba(255, 159, 64, .8);
+  padding: 8px;
+  margin: 2px;
+  border:2px solid black;
+  border-radius:2px; 
 }

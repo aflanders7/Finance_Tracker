@@ -37,7 +37,7 @@ def faq():
 @app.route('/expenses', methods=["POST", "GET"])
 def expense():
     if request.method == "GET":
-        query = "SELECT * FROM Expenses;"
+        query = "SELECT * FROM Expenses ORDER BY Day DESC;"
         cur = mysql.connection.cursor()
         cur.execute(query)
         data = cur.fetchall()
@@ -74,7 +74,65 @@ def expense():
             
             return redirect("/expenses")
 
+# routes for sorting and search
 
+@app.route('/expenses-cost', methods=["GET"])
+def expense2():
+    if request.method == "GET":
+        query = "SELECT * FROM Expenses ORDER BY Amount;"
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        data = cur.fetchall()
+        print(data)
+
+        query3 = 'SELECT SUM(Amount) FROM Expenses'
+        cur = mysql.connection.cursor()
+        cur.execute(query3)
+        total = cur.fetchall()
+        print(total)
+        
+        return render_template("expenses.j2", Expenses=data, total=total)
+
+@app.route('/expenses-category', methods=["GET"])
+def expense3():
+    if request.method == "GET":
+        query = "SELECT * FROM Expenses ORDER BY Category;"
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        data = cur.fetchall()
+        print(data)
+
+        query3 = 'SELECT SUM(Amount) FROM Expenses'
+        cur = mysql.connection.cursor()
+        cur.execute(query3)
+        total = cur.fetchall()
+        print(total)
+        
+        return render_template("expenses.j2", Expenses=data, total=total)
+
+@app.route('/expenses-search', methods=["POST"])
+def expense4():
+    if request.method == "POST":
+        Name = request.form["searchName"]
+        # return to full chart if the reset button is selected
+        if Name == "":
+            return redirect("/expenses")
+        print(Name)
+        query = "SELECT * FROM Expenses WHERE Name LIKE "'%s'";"
+        cur = mysql.connection.cursor()
+        cur.execute(query,(Name,))
+        data = cur.fetchall()
+        print(data)
+
+        query3 = "SELECT SUM(Amount) FROM Expenses WHERE Name LIKE "'%s'";"
+        cur = mysql.connection.cursor()
+        cur.execute(query3,(Name,))
+        total = cur.fetchall()
+        print(total)
+        
+        return render_template("expenses.j2", Expenses=data, total=total)
+
+# routes for deletion
 @app.route('/delete_expense/<int:id>')
 def delete_expense(id):
     query = "DELETE FROM Expenses where ID = '%s';"
@@ -100,7 +158,7 @@ def graph():
             'November','December']
 
         for mon in dates:
-            month.append(MONTHS[mon])
+            month.append(MONTHS[mon-1])
 
 
         #query2 = 'SELECT SUM(Amount), Category FROM Expenses GROUP BY Category;'
