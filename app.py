@@ -48,17 +48,18 @@ def expense():
         cur.execute(query3)
         total = cur.fetchall()
         print(total)
-
+        
         return render_template("expenses.j2", Expenses=data, total=total)
 
     if request.method == "POST":
-        Name = request.form["name"]
-        Amount = request.form["amount"]
-        Category = request.form["category"]
-        Description = request.form["description"]
-        Day = request.form["date"]
 
         if request.form.get("Add_Expense"):
+            Name = request.form["name"]
+            Amount = request.form["amount"]
+            Category = request.form["category"]
+            Description = request.form["description"]
+            Day = request.form["date"]
+        
             if Description == "":
                 query = "INSERT INTO Expenses (Name, Amount, Category, Day) VALUES (%s, %s, %s, %s);"
                 cur = mysql.connection.cursor()
