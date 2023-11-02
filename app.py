@@ -30,6 +30,10 @@ mysql = MySQL(app)
 def root():
     return redirect("/expenses")
 
+@app.route('/faq')
+def faq():
+    return render_template("faq.html")
+
 @app.route('/expenses', methods=["POST", "GET"])
 def expense():
     if request.method == "GET":
@@ -38,7 +42,14 @@ def expense():
         cur.execute(query)
         data = cur.fetchall()
         print(data)
-        return render_template("expenses.j2", Expenses=data)
+
+        query3 = 'SELECT SUM(Amount) FROM Expenses'
+        cur = mysql.connection.cursor()
+        cur.execute(query3)
+        total = cur.fetchall()
+        print(total)
+
+        return render_template("expenses.j2", Expenses=data, total=total)
 
     if request.method == "POST":
         Name = request.form["name"]
@@ -62,6 +73,7 @@ def expense():
             
             return redirect("/expenses")
 
+
 @app.route('/delete_expense/<int:id>')
 def delete_expense(id):
     query = "DELETE FROM Expenses where ID = '%s';"
@@ -70,15 +82,11 @@ def delete_expense(id):
     mysql.connection.commit()
     return redirect("/expenses")
 
-# User functions
+
 @app.route('/graph', methods=["GET"])
 def graph():
     if request.method == "GET":
-        #Date2 = DateTime.Now.ToString("yyyy-MM-dd")
-        #Date1 = (datetime.datetime.now() - datetime.timedelta(30)).ToString("yyyy-MM-dd")
-        Date1 = '2023-10-01'
-        Date2 = '2023-11-05'
-        #query = "SELECT SUM(Amount), CAST(Day as DATE) FROM Expenses GROUP BY Day;"
+
         query = 'SELECT SUM(Amount), MONTH(Day) FROM Expenses GROUP BY MONTH(Day);'
         cur = mysql.connection.cursor()
         cur.execute(query)
@@ -94,21 +102,25 @@ def graph():
             month.append(MONTHS[mon])
 
 
-        query2 = 'SELECT SUM(Amount), Category FROM Expenses GROUP BY Category;'
+        #query2 = 'SELECT SUM(Amount), Category FROM Expenses GROUP BY Category;'
+        #cur = mysql.connection.cursor()
+        #cur.execute(query2)
+        #dat = cur.fetchall()
+
+        query3 = 'SELECT SUM(Amount) FROM Expenses'
         cur = mysql.connection.cursor()
-        cur.execute(query2)
-        dat = cur.fetchall()
-        total, categ = zip(*data)
+        cur.execute(query3)
+        total = cur.fetchall()
+        print(total)
 
-        return  render_template("graph.html", labels=month, data=money)
+        return  render_template("graph.html", labels=month, data=money, total=total)
 
-    #Date1 = request.form["date1"]
-    #Date2 = request.form["date2"]
 
-url = "http://127.0.0.1:8010/add"
 
-# Calling the random number generator microservice
-def call_random_microservie():
+url = "http://127.0.0.1:8010/" #microservice url
+
+
+def call_microservie():
 
     query2 = 'SELECT SUM(Amount), Category FROM Expenses GROUP BY Category;'
     cur = mysql.connection.cursor()
@@ -120,8 +132,8 @@ def call_random_microservie():
 
 
 @app.route("/check", methods=['GET'])
-def check_even_odd():
-	result = call_random_microservie()
+def check_micro():
+	result = call_microservie()
 
 	return jsonify({"result": result})
 

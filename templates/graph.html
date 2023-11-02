@@ -10,12 +10,15 @@
 <body>
 
     <div class="sidenav">
-        <a href="graph">Expenses Analysis</a>
+        <a href="graph">Spending Analysis</a>
         <a href="expenses">Expenses Tracker</a>
+        <a href="faq">FAQ</a>
     </div>
 
     <div class="content3">
-        <h1>Total Expenses per month</h1>
+        <h1>Spending Analysis</h1>
+        <p>&nbsp;</p>
+        <h2>Total Expenses per month</h2>
         <div style="height: 50vh; width: 50%;">
             <canvas id="myChart"></canvas>
         </div>
@@ -26,7 +29,7 @@
             const data = {
                 labels: labels,
                 datasets: [{
-                    label: 'Money spent',
+                    label: 'Dollars Spent',
                     backgroundColor: 'rgba(255, 159, 64, 0.2)',
                     borderColor: 'rgb(255, 159, 64)',
                     data: {{ data | tojson | safe }},

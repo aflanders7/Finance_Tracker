@@ -18,6 +18,10 @@ th, td {
     text-align: left;
   }
 
+th {
+    background-color: rgba(255, 159, 64, .8);
+}
+
 tr:hover {
     background-color: black;
     color: white

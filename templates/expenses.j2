@@ -5,14 +5,17 @@
 </head>
 
 <div class="sidenav">
-  <a href="graph">Expenses Analysis</a>
+  <a href="graph">Spending Analysis</a>
   <a href="expenses">Expenses Tracker</a>
+<a href="faq">FAQ</a>
 </div>
-
 
 
 <div class="content">
     <h1>Expenses Tracker</h1>
+    {% for item in total %}
+        <h2>Total Expenses: ${{ item[0] }}</h2>
+    {% endfor %}
     <table>
         <thead>
         <tr>
@@ -27,7 +30,7 @@
         {% for item in Expenses %}
         <tr>
             <td>{{ item[1] }}</td>
-            <td>{{ item[2] }}</td>
+            <td>${{ item[2] }}</td>
             <td>{{ item[3] }}</td>
             <td>{{ item[4] }}</td>
             <td>{{ item[5] }}</td>
@@ -37,7 +40,7 @@
     </table>
 </div>
     <div id="insert" class="content2">
-        <h2>Add an expense</h2>
+        <h2>Add An Expense</h2>
 
             <form id="Add_Expense" action="/expenses" method="post">
                 <fieldset>
