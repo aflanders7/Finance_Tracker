@@ -1,60 +1,74 @@
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Expenses</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+</head>
+
+<div class="sidenav">
+  <a href="graph">Expenses Analysis</a>
+  <a href="expenses">Expenses Tracker</a>
+</div>
 
 
-<p>&nbsp;</p>
 
-<table>
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Amount Spent</th>
-        <th>Category</th>
-        <th>Description</th>
-        <th>Date</th>
-    </tr>
-    <tbody>
-    {% for item in Expenses %}
-    <tr>
-        <td>{{ item[1] }}</td>
-        <td>{{ item[2] }}</td>
-        <td>{{ item[3] }}</td>
-        <td>{{ item[4] }}</td>
-        <td>{{ item[5] }}</td>
-        <td><a href="delete_expense/{{item[0]}}" class="btn btn-default">Delete</a></td>
-    </tr>
-    {% endfor %}
-</table>
+<div class="content">
+    <h1>Expenses Tracker</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Cost</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Date</th>
+            <th> </th>
+        </tr>
+        <tbody>
+        {% for item in Expenses %}
+        <tr>
+            <td>{{ item[1] }}</td>
+            <td>{{ item[2] }}</td>
+            <td>{{ item[3] }}</td>
+            <td>{{ item[4] }}</td>
+            <td>{{ item[5] }}</td>
+            <td><a href="delete_expense/{{item[0]}}" class="btn btn-default">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+    <div id="insert" class="content2">
+        <h2>Add an expense</h2>
 
-<p>&nbsp;</p>
+            <form id="Add_Expense" action="/expenses" method="post">
+                <fieldset>
+                    <!-- placeholder shows ghost text, required forces an input, pattern forces input adherence -->
+                    <label for="name">Name:</label>
+                    <input type="text" class="form-control" id="name" name="name"  placeholder="" required>
+                    <p>&nbsp;</p>
+                    <label for="amount">Amount Spent:</label>
+                    <input type="number" class="form-control" id="amount" name="amount" max="2000" placeholder="" required>
+                    <p>&nbsp;</p>
+                    <label for="category">Category:</label>
+                    <select class="form-control" id="category" name="category" placeholder="" required>
+                        <option value="Food">Food</option>
+                        <option value="Living">Living</option>
+                        <option value="Transportation">Transportation</option>
+                        <option value="Health">Health</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <p>&nbsp;</p>
+                    <label for="description">Description:</label>
+                    <input type="text" class="form-control" id="description" name="description" placeholder="optional">
+                    <p>&nbsp;</p>
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" name="date" value="2023-11-01" />
+                </fieldset>
 
-<div id="insert">
-		<form id="Add_Expense" action="/expenses" method="post">
-			<legend><strong>Add an expense</strong></legend>
-			<fieldset>
-                <!-- placeholder shows ghost text, required forces an input, pattern forces input adherence -->
-				<label for="name">Name:</label>
-				<input type="text" class="form-control" id="name" name="name"  placeholder="" required>
+                <!-- Create 'Add Person' and 'Cancel' buttons -->
+                <input type="submit" value="Add Expense" name="Add_Expense" class="btn btn-primary" style="margin:.5rem;">
 
-				<label for="amount">Amount Spent:</label>
-				<input type="number" class="form-control" id="amount" name="amount" max="2000" placeholder="" required>
+            </form>
+    </div><!--insert-->
 
-				<label for="category">Category:</label>
-				<select class="form-control" id="category" name="category" placeholder="" required>
-					<option value="Food">Food</option>
-					<option value="Living">Living</option>
-					<option value="Transportation">Transportation</option>
-					<option value="Health">Health</option>
-                    <option value="Entertainment">Entertainment</option>
-				</select>
 
-				<label for="description">Desrciption:</label>
-				<input type="text" class="form-control" id="description" name="description" placeholder="optional">
-
-                <label for="date">Date:</label>
-                <input type="date" id="date" name="date" value="2023-11-01" />
-            </fieldset>
-
-            <!-- Create 'Add Person' and 'Cancel' buttons -->
-			<input type="submit" value="Add_Expense" name="Add_Expense" class="btn btn-primary" style="margin:.5rem;">
-
-        </form>
-</div><!--insert-->
