@@ -65,7 +65,7 @@ a:hover {
   
   /* Style the content */
 .content {
-    margin-left: 200px;
+    margin-left: 240px;
     padding-left: 20px;
     width: 700px;
     position: fixed;
@@ -86,7 +86,7 @@ input[type=text], input[type=number],select {
 }
 
 .content3{
-    margin-left: 200px;
+    margin-left: 240px;
     padding-left: 20px;
 }
 
@@ -113,4 +113,13 @@ input[type=submit]:hover, button:hover {
   margin: 2px;
   border:2px solid black;
   border-radius:2px; 
+}
+
+.required:before {
+  content:" * ";
+  color: red;
+}
+
+label.required {
+  content:" *";
 }

@@ -4,7 +4,7 @@ from flask_mysqldb import MySQL
 from database.db_connector import connect_to_database, execute_query
 from dotenv import load_dotenv, find_dotenv
 from datetime import datetime
-import requests
+#import requests
 
 load_dotenv(find_dotenv())
 
@@ -30,10 +30,13 @@ mysql = MySQL(app)
 def root():
     return redirect("/expenses")
 
+# route for FAQ page
 @app.route('/faq')
 def faq():
     return render_template("faq.html")
 
+
+# route for expenses page
 @app.route('/expenses', methods=["POST", "GET"])
 def expense():
     if request.method == "GET":
@@ -74,7 +77,7 @@ def expense():
             
             return redirect("/expenses")
 
-# routes for sorting and search
+# routes for sorting on expenses page
 
 @app.route('/expenses-cost', methods=["GET"])
 def expense2():
@@ -110,6 +113,9 @@ def expense3():
         
         return render_template("expenses.j2", Expenses=data, total=total)
 
+
+# route for search function on expenses page
+
 @app.route('/expenses-search', methods=["POST"])
 def expense4():
     if request.method == "POST":
@@ -132,7 +138,8 @@ def expense4():
         
         return render_template("expenses.j2", Expenses=data, total=total)
 
-# routes for deletion
+# routes for deletion on expenses page table
+
 @app.route('/delete_expense/<int:id>')
 def delete_expense(id):
     query = "DELETE FROM Expenses where ID = '%s';"
@@ -142,23 +149,30 @@ def delete_expense(id):
     return redirect("/expenses")
 
 
+# routes for graph page
+
 @app.route('/graph', methods=["GET"])
 def graph():
     if request.method == "GET":
 
-        query = 'SELECT SUM(Amount), MONTH(Day) FROM Expenses GROUP BY MONTH(Day);'
+        query = 'SELECT SUM(Amount), MONTH(Day), YEAR(Day) FROM Expenses GROUP BY YEAR(Day), MONTH(DAY);'
         cur = mysql.connection.cursor()
         cur.execute(query)
         data = cur.fetchall()
         print(data)
 
-        money, dates = zip(*data)
+        money, dates, years = zip(*data)
+        print(years)
+        print(dates)
         month = []
         MONTHS = ['January','February','March','April','May','June','July','August','September','October',
             'November','December']
 
-        for mon in dates:
-            month.append(MONTHS[mon-1])
+        for data_month in dates:
+            month.append(MONTHS[data_month-1]) #+ str(years[data_month]))
+        
+        for month_index in range(len(month)):
+            month[month_index] = month[month_index] + " " + str((years[month_index]))
 
 
         #query2 = 'SELECT SUM(Amount), Category FROM Expenses GROUP BY Category;'
@@ -175,6 +189,7 @@ def graph():
         return  render_template("graph.html", labels=month, data=money, total=total)
 
 
+# microservice setup
 
 url = "http://127.0.0.1:8010/" #microservice url
 
