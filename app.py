@@ -4,7 +4,7 @@ from flask_mysqldb import MySQL
 from database.db_connector import connect_to_database, execute_query
 from dotenv import load_dotenv, find_dotenv
 from datetime import datetime
-#import requests
+import requests
 
 load_dotenv(find_dotenv())
 
@@ -191,25 +191,27 @@ def graph():
 
 # microservice setup
 
-url = "http://127.0.0.1:8010/" #microservice url
+url = "http://127.0.0.1:3008/" #microservice url
 
-
-def call_microservie():
-
+@app.route("/check", methods=['GET'])
+def microservice():
     query2 = 'SELECT SUM(Amount), Category FROM Expenses GROUP BY Category;'
     cur = mysql.connection.cursor()
     cur.execute(query2)
     dat = cur.fetchall()
     mylist = dat
-    response = requests.get(url, params={'catlist': mylist})
-    return response.json().get("result")
+    result = call_the_microservice(mylist)
+    return jsonify({"result": result})
 
 
-@app.route("/check", methods=['GET'])
-def check_micro():
-	result = call_microservie()
+#@app.route('/', methods=['GET']) 
+def call_the_microservice(list):  
+    
+    response = requests.get(url, params={'catlist': list})
 
-	return jsonify({"result": result})
+    percent = response.json().get("result")
+    return percent
+
 
 # Listener
 
