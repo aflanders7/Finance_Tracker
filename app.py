@@ -186,7 +186,11 @@ def graph():
         total = cur.fetchall()
         print(total)
 
-        return  render_template("graph.html", labels=month, data=money, total=total)
+        categories = microservice()
+        labels2 = list(categories.keys())
+        data2 = list(categories.values())
+
+        return  render_template("graph.html", labels=month, data=money, total=total, labels2=labels2, data2=data2)
 
 
 # microservice setup
@@ -201,7 +205,8 @@ def microservice():
     dat = cur.fetchall()
     mylist = dat
     result = call_the_microservice(mylist)
-    return jsonify({"result": result})
+    #return jsonify({"result": result})
+    return result
 
 
 #@app.route('/', methods=['GET']) 

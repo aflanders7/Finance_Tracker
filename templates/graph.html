@@ -15,25 +15,63 @@
         <a href="faq">FAQ</a>
     </div>
 
-    <div class="content3">
+    <div class="content">
         <h1>Spending Analysis</h1>
         <p>&nbsp;</p>
-        <h2>Total Expenses per month</h2>
         <div style="height: 50vh; width: 50%;">
             <canvas id="myChart"></canvas>
         </div>
+    </div>
+
+    <div class="content2">
+        <div style="height: 50vh; width: 40%;">
+            <canvas id="pieChart"></canvas>
+        </div>
+    </div>
     
         <script>
             const labels = {{ labels | tojson | safe}};
-    
+
+            const labels2 = {{ labels2 | tojson | safe}};
+
+            const background = [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 205, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(201, 203, 207, 0.2)'
+                    ];
+
+            const border = [
+                    'rgb(255, 99, 132)',
+                    'rgb(255, 159, 64)',
+                    'rgb(255, 205, 86)',
+                    'rgb(75, 192, 192)',
+                    'rgb(54, 162, 235)',
+                    'rgb(153, 102, 255)',
+                    'rgb(201, 203, 207)'
+                    ];
+
             const data = {
                 labels: labels,
                 datasets: [{
-                    label: 'Dollars Spent',
-                    backgroundColor: 'rgba(255, 159, 64, 0.2)',
-                    borderColor: 'rgb(255, 159, 64)',
+                    label: 'Money Spent',
+                    backgroundColor: background,
+                    borderColor: border,
                     data: {{ data | tojson | safe }},
                     borderWidth: 2
+                }]
+            };
+
+            const data2 = {
+                labels: labels2,
+                datasets: [{
+                    label: 'Months',
+                    backgroundColor: background,
+                    borderColor: border,
+                    data: {{ data2 | tojson | safe }},
                 }]
             };
 
@@ -45,6 +83,31 @@
                     y: {
                         beginAtZero: true
                     }
+                    },
+                    plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Expenses Per Month'
+                    }
+                    }
+                },
+                };
+
+            const config2 = {
+                type: 'pie',
+                data: data2,
+                options: {
+                    plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Expenses Per Category'
+                    }
                     }
                 },
                 };
@@ -53,9 +116,13 @@
                 document.getElementById('myChart'),
                 config
             );
+
+            const pieChart = new Chart(
+                document.getElementById('pieChart'),
+                config2
+            );
     
         </script>
-    </div>
 </body>
 </html>
  
