@@ -1,3 +1,10 @@
+:root {
+  --dark: rgb(54, 162, 235);
+  --light: rgba(54, 162, 235, 0.2);
+  --medium: rgba(54, 162, 235, 0.6);
+}
+
+
 * {
     box-sizing: border-box;
   }
@@ -19,7 +26,7 @@ th, td {
   }
 
 th {
-    background-color: rgba(255, 159, 64, .8);
+    background-color: var(--medium);
 }
 
 tr:hover {
@@ -29,11 +36,12 @@ tr:hover {
 
 a {
     text-decoration: none;
-    color: orange;
+    color: var(--dark);
 }
 
 a:hover {
-    color: lightsalmon;
+    color: white;
+    cursor: pointer;
 }
   
   /* Style the side navigation */
@@ -86,9 +94,13 @@ input[type=text], input[type=number],select {
 }
 
 .content3{
+    padding-top: 80px;
     margin-left: 240px;
     padding-left: 20px;
+    width: 1000px;
+    display: flex;
 }
+
 
 .sort {
   display: inline-flex;
@@ -108,11 +120,12 @@ input[type=submit], button {
 }
 
 input[type=submit]:hover, button:hover {
-  background-color: rgba(255, 159, 64, .8);
+  background-color: var(--light);
   padding: 8px;
   margin: 2px;
-  border:2px solid black;
+  border:2px solid var(--dark);
   border-radius:2px; 
+  cursor: pointer;
 }
 
 .required:before {
