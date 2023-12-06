@@ -55,7 +55,7 @@
             const data = {
                 labels: labels,
                 datasets: [{
-                    label: 'Money Spent',
+                    label: 'Expense',
                     backgroundColor: background,
                     borderColor: border,
                     data: {{ data | tojson | safe }},
@@ -66,7 +66,7 @@
             const data2 = {
                 labels: labels2,
                 datasets: [{
-                    label: 'Months',
+                    label: 'Percent',
                     backgroundColor: background,
                     borderColor: border,
                     data: {{ data2 | tojson | safe }},
