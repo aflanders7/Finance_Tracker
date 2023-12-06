@@ -1,45 +1,13 @@
-from flask import Flask, render_template, json, redirect, request, jsonify
-import os
-from flask_mysqldb import MySQL
-from database.db_connector import connect_to_database, execute_query
-from dotenv import load_dotenv, find_dotenv
-from datetime import datetime
+from flask import Flask, render_template, json, redirect, request
+import database.db_connector as db
 import requests
 
-load_dotenv(find_dotenv())
-
-host = os.environ.get("host")
-user = os.environ.get("user")
-passwd = os.environ.get("passwd")
-db = os.environ.get("db")
 
 # Configuration
 
 app = Flask(__name__)
+db_connection = db.connect_to_database()
 
-app.config['MYSQL_HOST'] = host
-app.config['MYSQL_USER'] = user
-app.config['MYSQL_PASSWORD'] = passwd
-app.config['MYSQL_DB'] = db
-mysql = MySQL(app)
-
-
-def get_data(query):
-    cur = mysql.connection.cursor()
-    cur.execute(query)
-    data = cur.fetchall()
-    return data
-
-def get_data_values(query, values):
-    cur = mysql.connection.cursor()
-    cur.execute(query, values)
-    data = cur.fetchall()
-    return data
-
-def commit_data_values(query, values):
-    cur = mysql.connection.cursor()
-    cur.execute(query, values)
-    mysql.connection.commit()
 
 
 # Routes 
@@ -59,10 +27,10 @@ def faq():
 def expense():
     if request.method == "GET":
         query = "SELECT * FROM Expenses ORDER BY Day DESC;"
-        data = get_data(query)
+        data = db.get_data(query)
 
         query2 = 'SELECT SUM(Amount) FROM Expenses'
-        total = get_data(query2)
+        total = db.get_data(query2)
         
         return render_template("expenses.j2", Expenses=data, total=total)
 
@@ -77,11 +45,11 @@ def expense():
         
             if Description == "":
                 query = "INSERT INTO Expenses (Name, Amount, Category, Day) VALUES (%s, %s, %s, %s);"
-                commit_data_values(query, (Name, Amount, Category, Day))
+                db.commit_data_values(query, (Name, Amount, Category, Day))
 
             else:
                 query = "INSERT INTO Expenses (Name, Amount, Category, Description, Day) VALUES (%s, %s, %s, %s, %s);"
-                commit_data_values(query, (Name, Amount, Category, Description, Day))
+                db.commit_data_values(query, (Name, Amount, Category, Description, Day))
             
             return redirect("/expenses")
 
@@ -91,10 +59,10 @@ def expense():
 def expense2():
     if request.method == "GET":
         query = "SELECT * FROM Expenses ORDER BY Amount;"
-        data = get_data(query)
+        data = db.get_data(query)
 
         query2 = 'SELECT SUM(Amount) FROM Expenses'
-        total = get_data(query2)
+        total = db.get_data(query2)
         
         return render_template("expenses.j2", Expenses=data, total=total)
 
@@ -102,10 +70,10 @@ def expense2():
 def expense3():
     if request.method == "GET":
         query = "SELECT * FROM Expenses ORDER BY Category;"
-        data = get_data(query)
+        data = db.get_data(query)
 
         query2 = 'SELECT SUM(Amount) FROM Expenses'
-        total = get_data(query2)
+        total = db.get_data(query2)
         
         return render_template("expenses.j2", Expenses=data, total=total)
 
@@ -121,10 +89,10 @@ def expense4():
             return redirect("/expenses")
 
         query = "SELECT * FROM Expenses WHERE Name LIKE "'%s'";"
-        data = get_data_values(query, (Name,))
+        data = db.get_data_values(query, (Name,))
 
         query2 = "SELECT SUM(Amount) FROM Expenses WHERE Name LIKE "'%s'";"
-        total = get_data_values(query2, (Name,))
+        total = db.get_data_values(query2, (Name,))
         
         return render_template("expenses.j2", Expenses=data, total=total)
 
@@ -133,7 +101,7 @@ def expense4():
 @app.route('/delete_expense/<int:id>')
 def delete_expense(id):
     query = "DELETE FROM Expenses where ID = '%s';"
-    commit_data_values(query, (id,))
+    db.commit_data_values(query, (id,))
     return redirect("/expenses")
 
 
@@ -144,7 +112,7 @@ def graph():
     if request.method == "GET":
 
         query = 'SELECT SUM(Amount), MONTH(Day), YEAR(Day) FROM Expenses GROUP BY YEAR(Day), MONTH(DAY);'
-        data = get_data(query)
+        data = db.get_data(query)
 
         money, dates, years = zip(*data)
         MONTHS = ['January','February','March','April','May','June','July','August','September','October',
@@ -156,7 +124,7 @@ def graph():
             month.append(MONTHS[month_val] + " " + str(years[index]))
         
         query2 = 'SELECT SUM(Amount) FROM Expenses'
-        total = get_data(query2)
+        total = db.get_data(query2)
 
         categories = microservice()
         labels2 = list(categories.keys())
@@ -172,9 +140,8 @@ url = "http://127.0.0.1:3008/" #microservice url
 @app.route("/check", methods=['GET'])
 def microservice():
     query = 'SELECT SUM(Amount), Category FROM Expenses GROUP BY Category;'
-    data = get_data(query)
-    mylist = data
-    result = call_the_microservice(mylist)
+    data = db.get_data(query)
+    result = call_the_microservice(data)
     return result
 
 
