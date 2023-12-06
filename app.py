@@ -9,7 +9,6 @@ app = Flask(__name__)
 db_connection = db.connect_to_database()
 
 
-
 # Routes 
 
 @app.route('/')
@@ -26,6 +25,7 @@ def faq():
 @app.route('/expenses', methods=["POST", "GET"])
 def expense():
     if request.method == "GET":
+
         query = "SELECT * FROM Expenses ORDER BY Day DESC;"
         data = db.get_data(query)
 
@@ -84,7 +84,7 @@ def expense3():
 def expense4():
     if request.method == "POST":
         Name = request.form["searchName"]
-        # return to full chart if the reset button is selected
+
         if Name == "":
             return redirect("/expenses")
 
@@ -119,7 +119,7 @@ def graph():
             'November','December']
 
         month = []
-        for index in range(len(dates)):
+        for index in range(len(dates)):     # get the list of months and years to use as labels
             month_val = dates[index] - 1
             month.append(MONTHS[month_val] + " " + str(years[index]))
         
@@ -143,7 +143,6 @@ def microservice():
     data = db.get_data(query)
     result = call_the_microservice(data)
     return result
-
 
 def call_the_microservice(list):  
     response = requests.get(url, params={'catlist': list})
