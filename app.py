@@ -36,6 +36,11 @@ def get_data_values(query, values):
     data = cur.fetchall()
     return data
 
+def commit_data_values(query, values):
+    cur = mysql.connection.cursor()
+    cur.execute(query, values)
+    mysql.connection.commit()
+
 
 # Routes 
 
@@ -72,15 +77,11 @@ def expense():
         
             if Description == "":
                 query = "INSERT INTO Expenses (Name, Amount, Category, Day) VALUES (%s, %s, %s, %s);"
-                cur = mysql.connection.cursor()
-                cur.execute(query, (Name, Amount, Category, Day))
-                mysql.connection.commit()
+                commit_data_values(query, (Name, Amount, Category, Day))
 
             else:
                 query = "INSERT INTO Expenses (Name, Amount, Category, Description, Day) VALUES (%s, %s, %s, %s, %s);"
-                cur = mysql.connection.cursor()
-                cur.execute(query, (Name, Amount, Category, Description, Day))
-                mysql.connection.commit()
+                commit_data_values(query, (Name, Amount, Category, Description, Day))
             
             return redirect("/expenses")
 
@@ -103,7 +104,7 @@ def expense3():
         query = "SELECT * FROM Expenses ORDER BY Category;"
         data = get_data(query)
 
-        query3 = 'SELECT SUM(Amount) FROM Expenses'
+        query2 = 'SELECT SUM(Amount) FROM Expenses'
         total = get_data(query2)
         
         return render_template("expenses.j2", Expenses=data, total=total)
@@ -132,9 +133,7 @@ def expense4():
 @app.route('/delete_expense/<int:id>')
 def delete_expense(id):
     query = "DELETE FROM Expenses where ID = '%s';"
-    cur = mysql.connection.cursor()
-    cur.execute(query, (id,))
-    mysql.connection.commit()
+    commit_data_values(query, (id,))
     return redirect("/expenses")
 
 
@@ -148,16 +147,14 @@ def graph():
         data = get_data(query)
 
         money, dates, years = zip(*data)
-        month = []
         MONTHS = ['January','February','March','April','May','June','July','August','September','October',
             'November','December']
 
-        for data_month in dates:
-            month.append(MONTHS[data_month-1]) 
+        month = []
+        for index in range(len(dates)):
+            month_val = dates[index] - 1
+            month.append(MONTHS[month_val] + " " + str(years[index]))
         
-        for month_index in range(len(month)):
-            month[month_index] = month[month_index] + " " + str((years[month_index]))
-
         query2 = 'SELECT SUM(Amount) FROM Expenses'
         total = get_data(query2)
 
