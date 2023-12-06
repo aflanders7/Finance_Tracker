@@ -1,7 +1,7 @@
 :root {
-  --dark: rgb(54, 162, 235);
-  --light: rgba(54, 162, 235, 0.2);
-  --medium: rgba(54, 162, 235, 0.6);
+  --dark: rgb(255, 205, 86);
+  --light: rgba(255, 159, 64, 0.2);
+  --medium: rgba(255, 159, 64, 0.6);
 }
 
 
@@ -16,7 +16,7 @@ body {
 
 table {
     border-collapse: collapse;
-    border: 2px solid;
+    border: 1px solid;
   }
 
 th, td {
@@ -83,7 +83,7 @@ input[type=text], input[type=number],select {
     width: 100%;
     padding: 5px;
     display: inline-block;
-    border: 2px solid black;
+    border: 1px solid black;
   }
 
 
@@ -91,6 +91,12 @@ input[type=text], input[type=number],select {
     margin-left: 950px;
     width: 350px;
     position: fixed;
+}
+
+fieldset {
+  padding: 25px;
+  background-color: var(--light);
+  border: 1px solid black;
 }
 
 .content3{
@@ -115,7 +121,7 @@ input[type=submit], button {
   background-color: gainsboro;
   padding: 8px;
   margin: 2px;
-  border:2px solid black;
+  border:1px solid black;
   border-radius:2px; 
 }
 
@@ -123,7 +129,7 @@ input[type=submit]:hover, button:hover {
   background-color: var(--light);
   padding: 8px;
   margin: 2px;
-  border:2px solid var(--dark);
+  border:1px solid var(--dark);
   border-radius:2px; 
   cursor: pointer;
 }
