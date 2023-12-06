@@ -24,6 +24,19 @@ app.config['MYSQL_DB'] = db
 mysql = MySQL(app)
 
 
+def get_data(query):
+    cur = mysql.connection.cursor()
+    cur.execute(query)
+    data = cur.fetchall()
+    return data
+
+def get_data_values(query, values):
+    cur = mysql.connection.cursor()
+    cur.execute(query, values)
+    data = cur.fetchall()
+    return data
+
+
 # Routes 
 
 @app.route('/')
@@ -41,16 +54,10 @@ def faq():
 def expense():
     if request.method == "GET":
         query = "SELECT * FROM Expenses ORDER BY Day DESC;"
-        cur = mysql.connection.cursor()
-        cur.execute(query)
-        data = cur.fetchall()
-        print(data)
+        data = get_data(query)
 
-        query3 = 'SELECT SUM(Amount) FROM Expenses'
-        cur = mysql.connection.cursor()
-        cur.execute(query3)
-        total = cur.fetchall()
-        print(total)
+        query2 = 'SELECT SUM(Amount) FROM Expenses'
+        total = get_data(query2)
         
         return render_template("expenses.j2", Expenses=data, total=total)
 
@@ -83,16 +90,10 @@ def expense():
 def expense2():
     if request.method == "GET":
         query = "SELECT * FROM Expenses ORDER BY Amount;"
-        cur = mysql.connection.cursor()
-        cur.execute(query)
-        data = cur.fetchall()
-        print(data)
+        data = get_data(query)
 
-        query3 = 'SELECT SUM(Amount) FROM Expenses'
-        cur = mysql.connection.cursor()
-        cur.execute(query3)
-        total = cur.fetchall()
-        print(total)
+        query2 = 'SELECT SUM(Amount) FROM Expenses'
+        total = get_data(query2)
         
         return render_template("expenses.j2", Expenses=data, total=total)
 
@@ -100,16 +101,10 @@ def expense2():
 def expense3():
     if request.method == "GET":
         query = "SELECT * FROM Expenses ORDER BY Category;"
-        cur = mysql.connection.cursor()
-        cur.execute(query)
-        data = cur.fetchall()
-        print(data)
+        data = get_data(query)
 
         query3 = 'SELECT SUM(Amount) FROM Expenses'
-        cur = mysql.connection.cursor()
-        cur.execute(query3)
-        total = cur.fetchall()
-        print(total)
+        total = get_data(query2)
         
         return render_template("expenses.j2", Expenses=data, total=total)
 
@@ -123,18 +118,12 @@ def expense4():
         # return to full chart if the reset button is selected
         if Name == "":
             return redirect("/expenses")
-        print(Name)
-        query = "SELECT * FROM Expenses WHERE Name LIKE "'%s'";"
-        cur = mysql.connection.cursor()
-        cur.execute(query,(Name,))
-        data = cur.fetchall()
-        print(data)
 
-        query3 = "SELECT SUM(Amount) FROM Expenses WHERE Name LIKE "'%s'";"
-        cur = mysql.connection.cursor()
-        cur.execute(query3,(Name,))
-        total = cur.fetchall()
-        print(total)
+        query = "SELECT * FROM Expenses WHERE Name LIKE "'%s'";"
+        data = get_data_values(query, (Name,))
+
+        query2 = "SELECT SUM(Amount) FROM Expenses WHERE Name LIKE "'%s'";"
+        total = get_data_values(query2, (Name,))
         
         return render_template("expenses.j2", Expenses=data, total=total)
 
@@ -156,35 +145,21 @@ def graph():
     if request.method == "GET":
 
         query = 'SELECT SUM(Amount), MONTH(Day), YEAR(Day) FROM Expenses GROUP BY YEAR(Day), MONTH(DAY);'
-        cur = mysql.connection.cursor()
-        cur.execute(query)
-        data = cur.fetchall()
-        print(data)
+        data = get_data(query)
 
         money, dates, years = zip(*data)
-        print(years)
-        print(dates)
         month = []
         MONTHS = ['January','February','March','April','May','June','July','August','September','October',
             'November','December']
 
         for data_month in dates:
-            month.append(MONTHS[data_month-1]) #+ str(years[data_month]))
+            month.append(MONTHS[data_month-1]) 
         
         for month_index in range(len(month)):
             month[month_index] = month[month_index] + " " + str((years[month_index]))
 
-
-        #query2 = 'SELECT SUM(Amount), Category FROM Expenses GROUP BY Category;'
-        #cur = mysql.connection.cursor()
-        #cur.execute(query2)
-        #dat = cur.fetchall()
-
-        query3 = 'SELECT SUM(Amount) FROM Expenses'
-        cur = mysql.connection.cursor()
-        cur.execute(query3)
-        total = cur.fetchall()
-        print(total)
+        query2 = 'SELECT SUM(Amount) FROM Expenses'
+        total = get_data(query2)
 
         categories = microservice()
         labels2 = list(categories.keys())
@@ -199,21 +174,15 @@ url = "http://127.0.0.1:3008/" #microservice url
 
 @app.route("/check", methods=['GET'])
 def microservice():
-    query2 = 'SELECT SUM(Amount), Category FROM Expenses GROUP BY Category;'
-    cur = mysql.connection.cursor()
-    cur.execute(query2)
-    dat = cur.fetchall()
-    mylist = dat
+    query = 'SELECT SUM(Amount), Category FROM Expenses GROUP BY Category;'
+    data = get_data(query)
+    mylist = data
     result = call_the_microservice(mylist)
-    #return jsonify({"result": result})
     return result
 
 
-#@app.route('/', methods=['GET']) 
 def call_the_microservice(list):  
-    
     response = requests.get(url, params={'catlist': list})
-
     percent = response.json().get("result")
     return percent
 
