@@ -1,7 +1,7 @@
 :root {
-  --dark: rgb(255, 205, 86);
-  --light: rgba(255, 159, 64, 0.2);
-  --medium: rgba(255, 159, 64, 0.6);
+  --dark: rgb(238, 65, 65);
+  --light: rgba(238, 65, 65, 0.2);
+  --medium: rgba(238, 65, 65, 0.6);
 }
 
 
@@ -95,7 +95,7 @@ input[type=text], input[type=number],select {
 
 fieldset {
   padding: 25px;
-  background-color: var(--light);
+  background-color: rgb(245, 241, 241);
   border: 1px solid black;
 }
 
