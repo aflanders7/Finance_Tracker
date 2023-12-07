@@ -60,7 +60,7 @@ def expense():
 @app.route('/expenses-cost', methods=["GET"])
 def expense_sort_cost():
     if request.method == "GET":
-        query = "SELECT * FROM Expenses ORDER BY Amount;"   
+        query = "SELECT * FROM Expenses ORDER BY Amount;"  
         data = db.get_data(query)
 
         query2 = 'SELECT SUM(Amount) FROM Expenses'
