@@ -62,7 +62,7 @@ def expense():
 def expense_sort():
     if request.method == "GET":
         value = request.args["sort"]
-        
+
         if value == "Category":
             query = "SELECT * FROM Expenses ORDER BY Category;" 
 
@@ -139,7 +139,7 @@ def get_month_labels(dates, years):
 
 url = "http://127.0.0.1:3008/" #microservice url
 
-@app.route("/check", methods=['GET'])
+
 def microservice():
     query = 'SELECT SUM(Amount), Category FROM Expenses GROUP BY Category;'
     data = db.get_data(query)
