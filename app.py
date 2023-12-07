@@ -55,25 +55,21 @@ def expense():
             
             return redirect("/expenses")
 
-# routes for sorting on expenses page
 
-@app.route('/expenses-cost', methods=["GET"])
-def expense_sort_cost():
+# route for sorting on expenses page
+
+@app.route('/expenses-sort', methods=["GET"])
+def expense_sort():
     if request.method == "GET":
-        query = "SELECT * FROM Expenses ORDER BY Amount;"  
-        data = db.get_data(query)
-
-        query2 = 'SELECT SUM(Amount) FROM Expenses'
-        total = db.get_data(query2)
+        value = request.args["sort"]
         
-        return render_template("expenses.j2", Expenses=data, total=total)
+        if value == "Category":
+            query = "SELECT * FROM Expenses ORDER BY Category;" 
 
-@app.route('/expenses-category', methods=["GET"])
-def expense_sort_cat():
-    if request.method == "GET":
-        query = "SELECT * FROM Expenses ORDER BY Category;" 
+        elif value == "Cost":
+            query = "SELECT * FROM Expenses ORDER BY Amount;"  
+        
         data = db.get_data(query)
-
         query2 = 'SELECT SUM(Amount) FROM Expenses'
         total = db.get_data(query2)
         
@@ -86,7 +82,6 @@ def expense_sort_cat():
 def search_expense():
     if request.method == "POST":
         Name = request.form["searchName"]
-
         if Name == "":
             return redirect("/expenses")
 
