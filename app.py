@@ -16,12 +16,14 @@ def root():
     return redirect("/expenses")
 
 # route for FAQ page
+
 @app.route('/faq')
 def faq():
     return render_template("faq.html")
 
 
 # route for expenses page
+
 @app.route('/expenses', methods=["POST", "GET"])
 def expense():
     if request.method == "GET":
@@ -56,9 +58,9 @@ def expense():
 # routes for sorting on expenses page
 
 @app.route('/expenses-cost', methods=["GET"])
-def expense2():
+def expense_sort_cost():
     if request.method == "GET":
-        query = "SELECT * FROM Expenses ORDER BY Amount;"
+        query = "SELECT * FROM Expenses ORDER BY Amount;"   
         data = db.get_data(query)
 
         query2 = 'SELECT SUM(Amount) FROM Expenses'
@@ -67,9 +69,9 @@ def expense2():
         return render_template("expenses.j2", Expenses=data, total=total)
 
 @app.route('/expenses-category', methods=["GET"])
-def expense3():
+def expense_sort_cat():
     if request.method == "GET":
-        query = "SELECT * FROM Expenses ORDER BY Category;"
+        query = "SELECT * FROM Expenses ORDER BY Category;" 
         data = db.get_data(query)
 
         query2 = 'SELECT SUM(Amount) FROM Expenses'
@@ -81,7 +83,7 @@ def expense3():
 # route for search function on expenses page
 
 @app.route('/expenses-search', methods=["POST"])
-def expense4():
+def search_expense():
     if request.method == "POST":
         Name = request.form["searchName"]
 
@@ -96,7 +98,7 @@ def expense4():
         
         return render_template("expenses.j2", Expenses=data, total=total)
 
-# routes for deletion on expenses page table
+# route for deletion on expenses page table
 
 @app.route('/delete_expense/<int:id>')
 def delete_expense(id):
@@ -115,13 +117,7 @@ def graph():
         data = db.get_data(query)
 
         money, dates, years = zip(*data)
-        MONTHS = ['January','February','March','April','May','June','July','August','September','October',
-            'November','December']
-
-        month = []
-        for index in range(len(dates)):     # get the list of months and years to use as labels
-            month_val = dates[index] - 1
-            month.append(MONTHS[month_val] + " " + str(years[index]))
+        labels = get_month_labels(dates, years)
         
         query2 = 'SELECT SUM(Amount) FROM Expenses'
         total = db.get_data(query2)
@@ -130,7 +126,18 @@ def graph():
         labels2 = list(categories.keys())
         data2 = list(categories.values())
 
-        return  render_template("graph.html", labels=month, data=money, total=total, labels2=labels2, data2=data2)
+        return  render_template("graph.html", labels=labels, data=money, total=total, labels2=labels2, data2=data2)
+
+def get_month_labels(dates, years):
+    MONTHS = ['January','February','March','April','May','June','July','August','September','October',
+        'November','December']
+     
+    data_labels = []
+    for index in range(len(dates)):     # get the list of months and years to use as labels
+        month_val = dates[index] - 1
+        data_labels.append(MONTHS[month_val] + " " + str(years[index]))   
+
+    return data_labels
 
 
 # microservice setup

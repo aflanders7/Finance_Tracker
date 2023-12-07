@@ -15,6 +15,8 @@ def connect_to_database(host = host, user = user, passwd = passwd, db = db):
     db_connection = MySQLdb.connect(host,user,passwd,db)
     return db_connection
 
+# query functions
+
 def get_data(query):
     cur = db_connection.cursor()
     cur.execute(query)

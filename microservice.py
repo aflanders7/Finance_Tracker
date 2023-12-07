@@ -12,8 +12,6 @@ def microservice():
     Output: calculates the total money spent and then determines the percentage of money that each
             category contributes to the total
 
-    Exception: None
-
     Complexity: time -- O(n) where n is the size of the list requested
 
     Return: jsonify({"result": result}) (string) -- processed list in the json format so the function that
@@ -34,7 +32,7 @@ def microservice():
     for i in range(0, len(data), 2):
         result[data[i+1]] = round(float(data[i])/cost * 100, 0)
 
-    # return jsonify object so function that called this microservice may use the processed data
+    # return json object so function that called this microservice may use the processed data
     return jsonify({"result": result})
 
 
