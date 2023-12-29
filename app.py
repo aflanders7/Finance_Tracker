@@ -86,10 +86,10 @@ def search_expense():
         if Name == "":
             return redirect("/expenses")
 
-        query = "SELECT * FROM Expenses WHERE Name LIKE "'%s'";"
+        query = "SELECT * FROM Expenses WHERE Name ILIKE "'%s'";"
         data = db.get_data_values(query, (Name,))
 
-        query2 = "SELECT SUM(Amount) FROM Expenses WHERE Name LIKE "'%s'";"
+        query2 = "SELECT SUM(Amount) FROM Expenses WHERE Name ILIKE "'%s'";"
         total = db.get_data_values(query2, (Name,))
         
         return render_template("expenses.j2", Expenses=data, total=total)
@@ -109,10 +109,11 @@ def delete_expense(id):
 def graph():
     if request.method == "GET":
 
-        query = 'SELECT SUM(Amount), MONTH(Day), YEAR(Day) FROM Expenses GROUP BY YEAR(Day), MONTH(DAY);'
+        query = 'SELECT CAST(SUM(Amount) AS INT), CAST(EXTRACT(MONTH FROM DAY) AS INT) as month, CAST(EXTRACT(YEAR FROM DAY) AS INT) as year FROM Expenses GROUP BY month, year;'
         data = db.get_data(query)
-
+        
         money, dates, years = zip(*data)
+
         labels = get_month_labels(dates, years)
         
         query2 = 'SELECT SUM(Amount) FROM Expenses'
@@ -142,16 +143,32 @@ url = "http://127.0.0.1:3008/" #microservice url
 
 
 def microservice():
-    query = 'SELECT SUM(Amount), Category FROM Expenses GROUP BY Category;'
+    query = 'SELECT CAST(SUM(Amount) AS INT), Category FROM Expenses GROUP BY Category;'
     data = db.get_data(query)
+    print(data)
     # microservice removed for deployment 
-    result = call_the_microservice(data)
+    # result = call_the_microservice(data)
+    result = get_percentages(data)
     return result
 
 def call_the_microservice(list):  
     response = requests.get(url, params={'catlist': list})
     percent = response.json().get("result")
     return percent
+
+def get_percentages(data):    
+    result = {}
+    cost = 0
+
+    # determine total cost
+    for i in range(0, len(data)):
+        cost += float(data[i][0])
+
+    # calculate percentage of total cost each category accounts for
+    for i in range(0, len(data)):
+        result[data[i][1]] = round(float(data[i][0])/cost * 100, 0)
+
+    return result
 
 
 # Listener
