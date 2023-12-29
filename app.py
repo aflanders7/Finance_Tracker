@@ -1,6 +1,7 @@
 from flask import Flask, render_template, json, redirect, request
 import database.db_connector as db
 import requests
+import psycopg2
 
 
 # Configuration
@@ -143,7 +144,7 @@ url = "http://127.0.0.1:3008/" #microservice url
 def microservice():
     query = 'SELECT SUM(Amount), Category FROM Expenses GROUP BY Category;'
     data = db.get_data(query)
-    # microser
+    # microservice removed for deployment 
     result = call_the_microservice(data)
     return result
 
