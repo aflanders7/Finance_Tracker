@@ -73,11 +73,11 @@ a:hover {
 .main {
   width: 80%;
   margin-left: 250px;
-  margin-top: 50px;
+  margin-top: 30px;
 }
 
 .container-table {
-  width: 60%;
+  width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-box;
@@ -87,22 +87,28 @@ a:hover {
   justify-content: center;
   flex-wrap: wrap;
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: 2px;
+  border: 1px solid gainsboro;
   overflow: hidden;
   box-shadow: 0 0 40px 0 rgba(0,0,0,.15);
   -moz-box-shadow: 0 0 40px 0 rgba(0,0,0,.15);
   -webkit-box-shadow: 0 0 40px 0 rgba(0,0,0,.15);
   -o-box-shadow: 0 0 40px 0 rgba(0,0,0,.15);
-  -ms-box-shadow: 0 0 40px 0 rgba(0,0,0,.15)
+  -ms-box-shadow: 0 0 40px 0 rgba(0,0,0,.15);
+  float: left;
 }
 
+.container-form {
+  width: 30%;
+  float: right;
+  margin-right: 70px;
+}
 
 
 .table-body {
   max-height: 585px;
   width: 100%;
 }
-
   
   /* Style the content */
 .content {
@@ -128,8 +134,13 @@ input[type=text], input[type=number],select {
 
 fieldset {
   padding: 25px;
-  background-color: rgb(245, 241, 241);
-  border: 1px solid black;
+  background-color: white;
+  border: 1px solid gainsboro;
+  box-shadow: 0 0 40px 0 rgba(0,0,0,.15);
+  -moz-box-shadow: 0 0 40px 0 rgba(0,0,0,.15);
+  -webkit-box-shadow: 0 0 40px 0 rgba(0,0,0,.15);
+  -o-box-shadow: 0 0 40px 0 rgba(0,0,0,.15);
+  -ms-box-shadow: 0 0 40px 0 rgba(0,0,0,.15);
 }
 
 .content3{
@@ -147,13 +158,19 @@ fieldset {
 
 .sort {
   display: inline-flex;
-  width: 63%;
+  width: 40%;
   float: right;
 }
 
 .search {
-  width: 30%;
+  width: 50%;
   float: left;
+}
+
+.container-mid {
+  width: 60%;
+  float: left;
+  display: inline-block;
 }
 
 input[type=submit], button {

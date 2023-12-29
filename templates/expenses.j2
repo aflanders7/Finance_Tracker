@@ -19,6 +19,8 @@
         <h2>Total Expenses: ${{ item[0] }}</h2>
     {% endfor %}
 
+    <div class="container-mid">
+
     <div class="header-container">
     <div class = "search">
     <form id="search" method='post' action='/expenses-search'>
@@ -43,7 +45,6 @@
     </div>
     </div>
         
-
 
     <div class="container-table">
     <table>
@@ -75,10 +76,10 @@
     </div>
     </table>
     </div>
+    </div>
 
-
-        <h2>&nbsp; Add An Expense</h2>
-
+    <div class="container-form">
+            <p> &nbsp; Add an Expense: </p>
             <form id="Add_Expense" action="/expenses" method="post">
                 <fieldset>
                     <label for="name" class="required" >Title:</label>
@@ -107,6 +108,7 @@
                 <input type="submit" value="Add Expense" name="Add_Expense" class="btn btn-primary btn-block" style="margin:.5rem;">
 
             </form>
+    </div>
 
 </div>
 
