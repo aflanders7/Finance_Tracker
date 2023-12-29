@@ -3,11 +3,13 @@
     <link rel="stylesheet" type="text/css" href="/static/css/style.css">
 </head>
 
-<div class="sidenav">
-    <a href="expenses">Expense Tracker</a>
-    <a href="graph">Spending Analysis</a>
-    <a href="faq">FAQ</a>
-</div>
+    <div class="sidenav">
+        <br>
+        <a href="graph">Spending Analysis</a>
+        <a href="expenses">Expenses</a>
+        <a href="income">Income</a>
+        <a href="faq">FAQ</a>
+    </div>
 
 
 <div class="content">
@@ -20,7 +22,7 @@
     <div class="sort">
     <div class = "search">
     <form id="search" method='post' action='/expenses-search'>
-            <label for="searchName">Search by Name: </label>
+            <label for="searchName">Search by Title: </label>
             <input type="text" name="searchName" id="searchName">
             <input type="submit">
             <a href='/expenses'><button>Reset</button></a>
@@ -43,7 +45,7 @@
     <table>
         <thead>
         <tr>
-            <th>Name</th>
+            <th>Title</th>
             <th>Cost</th>
             <th>Category</th>
             <th>Description</th>
@@ -68,8 +70,7 @@
 
             <form id="Add_Expense" action="/expenses" method="post">
                 <fieldset>
-                    <!-- placeholder shows ghost text, required forces an input, pattern forces input adherence -->
-                    <label for="name" class="required" >Name:</label>
+                    <label for="name" class="required" >Title:</label>
                     <input type="text" class="form-control" id="name" name="name"  placeholder="" required>
                     <p>&nbsp;</p>
                     <label for="amount" class="required">Amount Spent:</label>
@@ -92,7 +93,6 @@
                     <input type="date" id="date" name="date" />
                 </fieldset>
 
-                <!-- Create 'Add Person' and 'Cancel' buttons -->
                 <input type="submit" value="Add Expense" name="Add_Expense" class="btn btn-primary btn-block" style="margin:.5rem;">
 
             </form>

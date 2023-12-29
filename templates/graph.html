@@ -10,8 +10,10 @@
 <body>
 
     <div class="sidenav">
-        <a href="expenses">Expense Tracker</a>
+        <br>
         <a href="graph">Spending Analysis</a>
+        <a href="expenses">Expenses</a>
+        <a href="income">Income</a>
         <a href="faq">FAQ</a>
     </div>
 
@@ -56,9 +58,16 @@
                 labels: labels,
                 datasets: [{
                     label: 'Expense',
-                    backgroundColor: background,
-                    borderColor: border,
+                    backgroundColor: 'rgba(255, 62, 62, 0.2)',
+                    borderColor: 'rgb(255, 62, 62)',
                     data: {{ data | tojson | safe }},
+                    borderWidth: 2
+                },
+                {
+                    label: 'Income',
+                    backgroundColor: 'rgba(0, 204, 102, 0.2)',
+                    borderColor: 'rgb(0, 204, 102)',
+                    data: {{ data1 | tojson | safe }},
                     borderWidth: 2
                 }]
             };

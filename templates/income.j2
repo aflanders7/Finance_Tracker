@@ -1,0 +1,84 @@
+<head>
+    <title>Income</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+</head>
+
+    <div class="sidenav">
+        <br>
+        <a href="graph">Spending Analysis</a>
+        <a href="expenses">Expenses</a>
+        <a href="income">Income</a>
+        <a href="faq">FAQ</a>
+    </div>
+
+
+<div class="content">
+    <h1>Income Tracker</h1>
+
+    {% for item in total %}
+        <h2>Total Income: ${{ item[0] }}</h2>
+    {% endfor %}
+
+    <div class="sort">
+    <div class = "search">
+    <form id="search" method='post' action='/income-search'>
+            <label for="searchName">Search by Title: </label>
+            <input type="text" name="searchName" id="searchName">
+            <input type="submit">
+            <a href='/income'><button>Reset</button></a>
+    </form>
+    </div>
+
+        <p>Sort By:</p>
+        <form id="income-cost" action="/income-sort" method="get">
+            <input type="submit" value="Amount" name="sort" id=class="btn btn-primary" style="margin:.5rem;">
+        </form>
+        <form id="income" action="/income" method="get">
+            <input type="submit" value="Date" name="sort" class="btn btn-primary" style="margin:.5rem;">
+        </form>
+        
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Amount</th>
+            <th>Description</th>
+            <th>Date</th>
+            <th> </th>
+        </tr>
+        <tbody>
+        {% for item in Income %}
+        <tr>
+            <td>{{ item[1] }}</td>
+            <td>${{ item[2] }}</td>
+            <td>{{ item[3] }}</td>
+            <td>{{ item[4] }}</td>
+            <td><a href="delete_income/{{item[0]}}" class="btn btn-default">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+    <div id="insert" class="content2">
+        <h2>&nbsp; Add An Income</h2>
+
+            <form id="Add_Income" action="/income" method="post">
+                <fieldset>
+                    <label for="name" class="required" >Name:</label>
+                    <input type="text" class="form-control" id="name" name="name"  placeholder="" required>
+                    <p>&nbsp;</p>
+                    <label for="amount" class="required">Amount Earned:</label>
+                    <input type="number" class="form-control" id="amount" name="amount" max="2000" placeholder="" required>
+                    <p>&nbsp;</p>
+                    <label for="description">   Description:</label>
+                    <input type="text" class="form-control" id="description" name="description" placeholder="optional">
+                    <p>&nbsp;</p>
+                    <label for="date" class="required">Date:</label>
+                    <input type="date" id="date" name="date" />
+                </fieldset>
+
+                <input type="submit" value="Add Income" name="Add_Income" class="btn btn-primary btn-block" style="margin:.5rem;">
+
+            </form>
+    </div><!--insert-->

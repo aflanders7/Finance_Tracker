@@ -14,7 +14,7 @@ db_connection = db.connect_to_database()
 
 @app.route('/')
 def root():
-    return redirect("/expenses")
+    return redirect("/graph")
 
 # route for FAQ page
 
@@ -32,7 +32,7 @@ def expense():
         query = "SELECT * FROM Expenses ORDER BY Day DESC;"
         data = db.get_data(query)
 
-        query2 = 'SELECT SUM(Amount) FROM Expenses'
+        query2 = 'SELECT SUM(Amount) FROM Expenses;'
         total = db.get_data(query2)
         
         return render_template("expenses.j2", Expenses=data, total=total)
@@ -55,6 +55,38 @@ def expense():
                 db.commit_data_values(query, (Name, Amount, Category, Description, Day))
             
             return redirect("/expenses")
+        
+# route for income page
+
+@app.route('/income', methods=["POST", "GET"])
+def income():
+    if request.method == "GET":
+
+        query = "SELECT * FROM Income ORDER BY Day DESC;"
+        data = db.get_data(query)
+
+        query2 = 'SELECT SUM(Amount) FROM Income;'
+        total = db.get_data(query2)
+        
+        return render_template("income.j2", Income=data, total=total)
+
+    if request.method == "POST":
+
+        if request.form.get("Add_Income"):
+            Name = request.form["name"]
+            Amount = request.form["amount"]
+            Description = request.form["description"]
+            Day = request.form["date"]
+        
+            if Description == "":
+                query = "INSERT INTO Income (Name, Amount, Day) VALUES (%s, %s, %s);"
+                db.commit_data_values(query, (Name, Amount, Day))
+
+            else:
+                query = "INSERT INTO Income (Name, Amount, Description, Day) VALUES (%s, %s, %s, %s);"
+                db.commit_data_values(query, (Name, Amount, Description, Day))
+            
+            return redirect("/income")
 
 
 # route for sorting on expenses page
@@ -76,6 +108,18 @@ def expense_sort():
         
         return render_template("expenses.j2", Expenses=data, total=total)
 
+# route for sorting on income page
+
+@app.route('/income-sort', methods=["GET"])
+def income_sort():
+    if request.method == "GET":
+        query = "SELECT * FROM Income ORDER BY Amount;"  
+        
+        data = db.get_data(query)
+        query2 = 'SELECT SUM(Amount) FROM Income'
+        total = db.get_data(query2)
+        
+        return render_template("income.j2", Income=data, total=total)
 
 # route for search function on expenses page
 
@@ -93,14 +137,37 @@ def search_expense():
         total = db.get_data_values(query2, (Name,))
         
         return render_template("expenses.j2", Expenses=data, total=total)
+    
+# route for search function on income page
 
-# route for deletion on expenses page table
+@app.route('/income-search', methods=["POST"])
+def search_income():
+    if request.method == "POST":
+        Name = request.form["searchName"]
+        if Name == "":
+            return redirect("/income")
+
+        query = "SELECT * FROM Income WHERE Name ILIKE "'%s'";"
+        data = db.get_data_values(query, (Name,))
+
+        query2 = "SELECT SUM(Amount) FROM Income WHERE Name ILIKE "'%s'";"
+        total = db.get_data_values(query2, (Name,))
+        
+        return render_template("income.j2", Income=data, total=total)
+
+# routes for deletions 
 
 @app.route('/delete_expense/<int:id>')
 def delete_expense(id):
     query = "DELETE FROM Expenses where ID = '%s';"
     db.commit_data_values(query, (id,))
     return redirect("/expenses")
+
+@app.route('/delete_income/<int:id>')
+def delete_income(id):
+    query = "DELETE FROM Income where ID = '%s';"
+    db.commit_data_values(query, (id,))
+    return redirect("/income")
 
 
 # routes for graph page
@@ -109,12 +176,13 @@ def delete_expense(id):
 def graph():
     if request.method == "GET":
 
-        query = 'SELECT CAST(SUM(Amount) AS INT), CAST(EXTRACT(MONTH FROM DAY) AS INT) as month, CAST(EXTRACT(YEAR FROM DAY) AS INT) as year FROM Expenses GROUP BY month, year;'
+        query = 'SELECT SUM(expense) as Expense, SUM(incomes) as Income, CAST(Month AS Int), CAST (Year AS Int) FROM (SELECT Extract(Month FROM Expenses.Day) AS Month, Extract(Year FROM Expenses.Day) AS Year, Expenses.amount as expense, 0 as incomes FROM Expenses UNION ALL SELECT Extract(Month FROM Income.Day) AS Month, Extract(Year FROM Income.Day) AS Year, 0 as expense, Income.amount as incomes FROM Income) as data GROUP BY data.Month, data.Year;'
         data = db.get_data(query)
-        
-        money, dates, years = zip(*data)
 
-        labels = get_month_labels(dates, years)
+        expense, income, months, years = zip(*data)
+        print(months)
+
+        labels = get_month_labels(months, years)
         
         query2 = 'SELECT SUM(Amount) FROM Expenses'
         total = db.get_data(query2)
@@ -123,7 +191,7 @@ def graph():
         labels2 = list(categories.keys())
         data2 = list(categories.values())
 
-        return  render_template("graph.html", labels=labels, data=money, total=total, labels2=labels2, data2=data2)
+        return  render_template("graph.html", labels=labels, data=expense, data1=income, total=total, labels2=labels2, data2=data2)
 
 def get_month_labels(dates, years):
     MONTHS = ['January','February','March','April','May','June','July','August','September','October',
@@ -135,6 +203,11 @@ def get_month_labels(dates, years):
         data_labels.append(MONTHS[month_val] + " " + str(years[index]))   
 
     return data_labels
+
+def convert_int(list):
+    for index in range(len(list)):
+        list[index] = int(list[index])
+        return list
 
 
 # microservice setup
