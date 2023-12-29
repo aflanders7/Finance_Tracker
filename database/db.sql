@@ -1,11 +1,10 @@
 CREATE TABLE Expenses (
-    ID INT(10) NOT NULL AUTO_INCREMENT,
+    ID INT NOT NULL PRIMARY KEY,
     Name VARCHAR(45) NOT NULL,
     Amount DECIMAL(6,2) NOT NULL,
     Category VARCHAR(45) NOT NULL,
     Description Varchar(90),
-    Day DATE,
-    PRIMARY KEY (ID)
+    Day DATE
 );
 
 INSERT INTO Expenses (Name, Amount, Category, Description, Day)
