@@ -4,7 +4,6 @@
   --medium: rgba(255, 62, 62, 0.6);
 }
 
-
 * {
     box-sizing: border-box;
   }
@@ -15,13 +14,13 @@ body {
   }
 
 table {
-    border-collapse: collapse;
-    border: 1px solid;
-  }
+  width: 100%;
+  border: 20px white;
+  padding: 6px;
+}
 
 th, td {
-    border-bottom: 1px solid;
-    padding: 10px;
+    padding: 18px;
     text-align: left;
   }
 
@@ -70,6 +69,40 @@ a:hover {
   background-color: #ddd;
     color: black;
   }
+
+.main {
+  width: 80%;
+  margin-left: 250px;
+  margin-top: 50px;
+}
+
+.container-table {
+  width: 60%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  overflow: hidden;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 40px 0 rgba(0,0,0,.15);
+  -moz-box-shadow: 0 0 40px 0 rgba(0,0,0,.15);
+  -webkit-box-shadow: 0 0 40px 0 rgba(0,0,0,.15);
+  -o-box-shadow: 0 0 40px 0 rgba(0,0,0,.15);
+  -ms-box-shadow: 0 0 40px 0 rgba(0,0,0,.15)
+}
+
+
+
+.table-body {
+  max-height: 585px;
+  width: 100%;
+}
+
   
   /* Style the content */
 .content {
@@ -107,14 +140,20 @@ fieldset {
     display: flex;
 }
 
+.header-container {
+  width: 100%;
+  display: inline-block;
+}
 
 .sort {
   display: inline-flex;
+  width: 63%;
+  float: right;
 }
 
 .search {
-  width: 200px;
-  margin-right: 80px;
+  width: 30%;
+  float: left;
 }
 
 input[type=submit], button {

@@ -3,23 +3,23 @@
     <link rel="stylesheet" type="text/css" href="/static/css/style.css">
 </head>
 
-    <div class="sidenav">
+<div class="sidenav">
         <br>
         <a href="graph">Spending Analysis</a>
         <a href="expenses">Expenses</a>
         <a href="income">Income</a>
         <a href="faq">FAQ</a>
-    </div>
+</div>
 
 
-<div class="content">
+<div class="main">
     <h1>Expenses Tracker</h1>
 
     {% for item in total %}
         <h2>Total Expenses: ${{ item[0] }}</h2>
     {% endfor %}
 
-    <div class="sort">
+    <div class="header-container">
     <div class = "search">
     <form id="search" method='post' action='/expenses-search'>
             <label for="searchName">Search by Title: </label>
@@ -29,6 +29,7 @@
     </form>
     </div>
 
+    <div class="sort">
         <p>Sort By:</p>
         <form id="expense-cost" action="/expenses-sort" method="get">
             <input type="submit" value="Cost" name="sort" id=class="btn btn-primary" style="margin:.5rem;">
@@ -39,10 +40,14 @@
         <form id="expense" action="/expenses" method="get">
             <input type="submit" value="Date" name="sort" class="btn btn-primary" style="margin:.5rem;">
         </form>
-        
     </div>
+    </div>
+        
 
+
+    <div class="container-table">
     <table>
+    <div class="table-header">
         <thead>
         <tr>
             <th>Title</th>
@@ -52,6 +57,10 @@
             <th>Date</th>
             <th> </th>
         </tr>
+        </thead>
+    </div>
+
+    <div class="table-body">
         <tbody>
         {% for item in Expenses %}
         <tr>
@@ -63,9 +72,11 @@
             <td><a href="delete_expense/{{item[0]}}" class="btn btn-default">Delete</a></td>
         </tr>
         {% endfor %}
+    </div>
     </table>
-</div>
-    <div id="insert" class="content2">
+    </div>
+
+
         <h2>&nbsp; Add An Expense</h2>
 
             <form id="Add_Expense" action="/expenses" method="post">
@@ -96,6 +107,7 @@
                 <input type="submit" value="Add Expense" name="Add_Expense" class="btn btn-primary btn-block" style="margin:.5rem;">
 
             </form>
-    </div><!--insert-->
+
+</div>
 
 
