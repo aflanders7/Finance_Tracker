@@ -17,14 +17,19 @@
         <a href="faq">FAQ</a>
     </div>
 
-    <h1 class = "content">Spending Analysis</h1>
-    <div class="content3">
+    <div class="main">
+    <h1>Spending Analysis</h1>
         <p>&nbsp;</p>
-        <div style="height: 50vh; width: 100%; padding-right: 60px;">
+
+        <div style="height: 50vh;" class = "container-l">
             <canvas id="myChart"></canvas>
         </div>
 
-        <div style="height: 50vh; width: 70%">
+        <div style="height: 50vh;" class = "container-r">
+            <canvas id="lineChart"></canvas>
+        </div>
+
+        <div style="height: 50vh;" class = "container-l">
             <canvas id="pieChart"></canvas>
         </div>
 
@@ -82,6 +87,18 @@
                 }]
             };
 
+            const data3 = {
+                labels: labels,
+                datasets: [{
+                    label: 'Net Account Balance',
+                    data: {{ data3 | tojson | safe }},
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    tension: 0.1
+                }]
+                };
+
             const config = {
                 type: 'bar',
                 data: data,
@@ -114,10 +131,18 @@
                     title: {
                         display: true,
                         text: 'Expenses Per Category'
-                    }
-                    }
-                },
-                };
+                    }}},};
+
+            const config3 = {
+                type: 'line',
+                data: data3,
+                options: {
+                    responsive: true,
+                    plugins: {
+                    title: {
+                        display: true,
+                        text: "Balance Over Time",
+                    }}}};
     
             const myChart = new Chart(
                 document.getElementById('myChart'),
@@ -127,6 +152,11 @@
             const pieChart = new Chart(
                 document.getElementById('pieChart'),
                 config2
+            );
+
+            const lineChart = new Chart(
+                document.getElementById('lineChart'),
+                config3
             );
     
         </script>

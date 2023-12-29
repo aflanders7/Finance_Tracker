@@ -180,9 +180,9 @@ def graph():
         data = db.get_data(query)
 
         expense, income, months, years = zip(*data)
-        print(months)
 
         labels = get_month_labels(months, years)
+        net_income = get_net(expense, income)
         
         query2 = 'SELECT SUM(Amount) FROM Expenses'
         total = db.get_data(query2)
@@ -191,7 +191,7 @@ def graph():
         labels2 = list(categories.keys())
         data2 = list(categories.values())
 
-        return  render_template("graph.html", labels=labels, data=expense, data1=income, total=total, labels2=labels2, data2=data2)
+        return  render_template("graph.html", labels=labels, data=expense, data1=income, total=total, labels2=labels2, data2=data2, data3=net_income)
 
 def get_month_labels(dates, years):
     MONTHS = ['January','February','March','April','May','June','July','August','September','October',
@@ -204,10 +204,14 @@ def get_month_labels(dates, years):
 
     return data_labels
 
-def convert_int(list):
-    for index in range(len(list)):
-        list[index] = int(list[index])
-        return list
+def get_net(expense, income):
+    net_income = []
+    total = 0
+    for index in range(len(expense)):
+        net = total + income[index] - expense[index] 
+        net_income.append(int(net))
+        total = net
+    return net_income
 
 
 # microservice setup
