@@ -2,7 +2,7 @@
   --dark: rgb(54, 162, 235);
   --light: rgba(54, 162, 235, 0.2);
   --medium: rgba(54, 162, 235, 0.6);
-  --red: rgb(255, 62, 62);
+  --red: rgb(99, 108, 129);
 }
 
 * {
@@ -18,6 +18,7 @@ table {
   width: 100%;
   border: 20px white;
   padding: 6px;
+  position: sticky;
 }
 
 th, td {
@@ -75,17 +76,20 @@ p, label {
   font-size: 1.2em;
 }
 
+.main2 {
+  width: 80%;
+  margin-left: 250px;
+  margin-top: 30px;
+  height: 1100px;
+}
+
 .main {
   width: 80%;
   margin-left: 250px;
   margin-top: 30px;
-  margin-bottom: 5%;
-  padding-bottom: 5%;
-  height: 900px;
 }
 
 .container-table {
-  width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-box;
@@ -94,16 +98,17 @@ p, label {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  overflow: hidden;
+  overflow-y:auto;
   border-radius: 2px;
   border: 1px solid gainsboro;
-  overflow: hidden;
   box-shadow: 0 0 40px 0 rgba(0,0,0,.15);
   -moz-box-shadow: 0 0 40px 0 rgba(0,0,0,.15);
   -webkit-box-shadow: 0 0 40px 0 rgba(0,0,0,.15);
   -o-box-shadow: 0 0 40px 0 rgba(0,0,0,.15);
   -ms-box-shadow: 0 0 40px 0 rgba(0,0,0,.15);
   float: left;
+  max-height: 600px;
+  width: 100%;
 }
 
 .container-form {
