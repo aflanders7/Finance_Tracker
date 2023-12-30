@@ -2,7 +2,7 @@
   --dark: rgb(54, 162, 235);
   --light: rgba(54, 162, 235, 0.2);
   --medium: rgba(54, 162, 235, 0.6);
-  --red: rgba(255, 62, 62, 0.6);
+  --red: rgb(255, 62, 62);
 }
 
 * {
@@ -36,7 +36,7 @@ tr:hover {
 
 a {
     text-decoration: none;
-    color: var(--dark);
+    color: var(--red);
 }
 
 a:hover {
@@ -118,13 +118,6 @@ p, label {
   width: 100%;
 }
   
-  /* Style the content */
-.content {
-    margin-left: 240px;
-    padding-left: 20px;
-    width: 700px;
-    position: fixed;
-  }
 
 input[type=text], input[type=number],select {
     width: 100%;
@@ -132,13 +125,6 @@ input[type=text], input[type=number],select {
     display: inline-block;
     border: 1px solid black;
   }
-
-
-.content2{
-    margin-left: 950px;
-    width: 350px;
-    position: fixed;
-}
 
 fieldset {
   padding: 25px;
@@ -151,13 +137,6 @@ fieldset {
   -ms-box-shadow: 0 0 40px 0 rgba(0,0,0,.15);
 }
 
-.content3{
-    padding-top: 80px;
-    margin-left: 240px;
-    padding-left: 20px;
-    width: 1000px;
-    display: flex;
-}
 
 .header-container {
   width: 100%;
