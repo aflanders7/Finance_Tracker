@@ -184,14 +184,19 @@ def graph():
         labels = get_month_labels(months, years)
         net_income = get_net(expense, income)
         
-        query2 = 'SELECT SUM(Amount) FROM Expenses'
+        query2 = 'SELECT SUM(Amount) FROM Expenses;'
         total = db.get_data(query2)
+
+        query3 = 'SELECT SUM(Amount) FROM Income;'
+        total2 = db.get_data(query3)
+
+        net_balance = (total2[0][0]) - (total[0][0])
 
         categories = microservice()
         labels2 = list(categories.keys())
         data2 = list(categories.values())
 
-        return  render_template("graph.html", labels=labels, data=expense, data1=income, total=total, labels2=labels2, data2=data2, data3=net_income)
+        return  render_template("graph.html", labels=labels, data=expense, data1=income, total=net_balance, labels2=labels2, data2=data2, data3=net_income)
 
 def get_month_labels(dates, years):
     MONTHS = ['January','February','March','April','May','June','July','August','September','October',
