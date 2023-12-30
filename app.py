@@ -176,7 +176,7 @@ def delete_income(id):
 def graph():
     if request.method == "GET":
 
-        query = 'SELECT SUM(expense) as Expense, SUM(incomes) as Income, CAST(Month AS Int), CAST (Year AS Int) FROM (SELECT Extract(Month FROM Expenses.Day) AS Month, Extract(Year FROM Expenses.Day) AS Year, Expenses.amount as expense, 0 as incomes FROM Expenses UNION ALL SELECT Extract(Month FROM Income.Day) AS Month, Extract(Year FROM Income.Day) AS Year, 0 as expense, Income.amount as incomes FROM Income) as data GROUP BY data.Month, data.Year;'
+        query = 'SELECT SUM(expense) as Expense, SUM(incomes) as Income, CAST(Month AS Int), CAST (Year AS Int) FROM (SELECT Extract(Month FROM Expenses.Day) AS Month, Extract(Year FROM Expenses.Day) AS Year, Expenses.amount as expense, 0 as incomes FROM Expenses UNION ALL SELECT Extract(Month FROM Income.Day) AS Month, Extract(Year FROM Income.Day) AS Year, 0 as expense, Income.amount as incomes FROM Income) as data GROUP BY data.Month, data.Year ORDER BY data.YEAR, data.MONTH;'
         data = db.get_data(query)
 
         expense, income, months, years = zip(*data)

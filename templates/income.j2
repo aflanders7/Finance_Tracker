@@ -11,14 +11,16 @@
     </div>
 
 
-<div class="content">
+<div class="main">
     <h1>Income Tracker</h1>
 
     {% for item in total %}
         <h2>Total Income: ${{ item[0] }}</h2>
     {% endfor %}
 
-    <div class="sort">
+    <div class="container-mid">
+
+    <div class="header-container">
     <div class = "search">
     <form id="search" method='post' action='/income-search'>
             <label for="searchName">Search by Title: </label>
@@ -28,6 +30,7 @@
     </form>
     </div>
 
+    <div class="sort">
         <p>Sort By:</p>
         <form id="income-cost" action="/income-sort" method="get">
             <input type="submit" value="Amount" name="sort" id=class="btn btn-primary" style="margin:.5rem;">
@@ -35,10 +38,12 @@
         <form id="income" action="/income" method="get">
             <input type="submit" value="Date" name="sort" class="btn btn-primary" style="margin:.5rem;">
         </form>
-        
+    </div> 
     </div>
 
+    <div class="container-table">
     <table>
+    <div class="table-header">
         <thead>
         <tr>
             <th>Title</th>
@@ -47,6 +52,12 @@
             <th>Date</th>
             <th> </th>
         </tr>
+        </thead>
+
+
+    </div>
+
+    <div class="table-body">
         <tbody>
         {% for item in Income %}
         <tr>
@@ -57,9 +68,12 @@
             <td><a href="delete_income/{{item[0]}}" class="btn btn-default">Delete</a></td>
         </tr>
         {% endfor %}
+    </div>
     </table>
-</div>
-    <div id="insert" class="content2">
+    </div>
+    </div>
+
+    <div class="container-form">
         <h2>&nbsp; Add An Income</h2>
 
             <form id="Add_Income" action="/income" method="post">
@@ -80,4 +94,5 @@
                 <input type="submit" value="Add Income" name="Add_Income" class="btn btn-primary btn-block" style="margin:.5rem;">
 
             </form>
-    </div><!--insert-->
+    </div>
+</div>
