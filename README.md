@@ -11,7 +11,7 @@ Author: Audrey Flanders
 * Chart.JS
 
 # About the project
-This is a personal finance tracker that allows a user to track their incomes and expenses. Provides graphs for financial data analysis.
+This is a personal finance tracker that allows a user to track their incomes and expenses. Provides graphs for financial data analysis using SQL queries.
 
 # Getting Started
 **1. Clone the repo**
